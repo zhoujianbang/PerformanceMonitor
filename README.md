@@ -3,7 +3,7 @@
 
 >用户层面感知的卡顿都是来自处理所有UI的主线程上，包括在主线程上进行的大计算，大量的IO操作，或者比较重的绘制工作。
 
-###寻找卡顿的切入点
+### 寻找卡顿的切入点
 如何监控主线程呢，首先需要知道的是主线程和其它线程一样都是靠NSRunLoop来驱动的。可以先看看CFRunLoopRun的大概的逻辑
 
 ```
@@ -65,7 +65,7 @@ int32_t __CFRunLoopRun()
 
 不难发现NSRunLoop调用方法主要就是在kCFRunLoopBeforeSources和kCFRunLoopBeforeWaiting之间,还有kCFRunLoopAfterWaiting之后,也就是如果我们发现这两个时间内耗时太长,那么就可以判定出此时主线程卡顿.
 
-###量化卡顿的程度
+### 量化卡顿的程度
 
 要监控NSRunLoop的状态,我们需要使用到CFRunLoopObserverRef,通过它可以实时获得这些状态值的变化,具体的使用如下:
 
